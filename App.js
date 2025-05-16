@@ -1,23 +1,28 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, Image, View } from "react-native";
+import { StyleSheet, Image, View } from "react-native";
 import BotonMas from "./componentes/Botones/BotonMas.js";
 import BotonMenos from "./componentes/Botones/BotonMenos.js";
 import PomodoroTimer from "./componentes/Cronometro/Cronometro.js";
 import NumeroConImagenes from "./componentes/Estilos/NumeroConImagenes.js";
+import { StatusBar } from 'expo-status-bar';
 
 export default function App() {
   const [pomodoroTime, setPomodoroTime] = useState(25);
   const [breakTime, setBreakTime] = useState(5);
 
-  const incrementPomodoro = () => setPomodoroTime((t) => Math.min(t + 1, 25));
-  const decrementPomodoro = () => setPomodoroTime((t) => Math.max(t - 1, 1));
+  const incrementPomodoro = () =>
+    setPomodoroTime((prev) => Math.min(prev + 1, 25));
+  const decrementPomodoro = () =>
+    setPomodoroTime((prev) => Math.max(prev - 1, 1));
 
-  const incrementBreak = () => setBreakTime((t) => Math.min(t + 1, 5));
-  const decrementBreak = () => setBreakTime((t) => Math.max(t - 1, 1));
+  const incrementBreak = () =>
+    setBreakTime((prev) => Math.min(prev + 1, 5));
+  const decrementBreak = () =>
+    setBreakTime((prev) => Math.max(prev - 1, 1));
 
   return (
     <View style={styles.container}>
-      <PomodoroTimer initialMinutes={pomodoroTime} />
+      <PomodoroTimer pomodoroTime={pomodoroTime} breakTime={breakTime} />
 
       <View style={styles.botones}>
         <Image
@@ -36,10 +41,12 @@ export default function App() {
           style={{ width: 120, height: 100 }}
           resizeMode="contain"
         />
-        <BotonMenos onPress={decrementBreak} />
+       <BotonMenos onPress={decrementBreak} />
         <NumeroConImagenes numero={breakTime} />
         <BotonMas onPress={incrementBreak} />
       </View>
+
+      <StatusBar style="auto" />
     </View>
   );
 }
