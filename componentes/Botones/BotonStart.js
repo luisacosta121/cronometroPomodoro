@@ -3,9 +3,9 @@ import EstiloBoton from "../Estilos/EstilosBoton.js"
 
 
 
-const BotonStart = () => {
+const BotonStart = ({ onPress }) => {
   return (
-    <TouchableOpacity >
+    <TouchableOpacity onPress={onPress}>
       <Image
         source={require("../../assets/botones/botonStart.png")}
         style={EstiloBoton.imagen}

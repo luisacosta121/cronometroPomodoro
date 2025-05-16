@@ -1,8 +1,5 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
-import BotonStart from "./componentes/Botones/BotonStart.js";
-import BotonReset from "./componentes/Botones/BotonReset.js";
-import BotonPause from "./componentes/Botones/BotonPause.js";
 import BotonMas from "./componentes/Botones/BotonMas.js";
 import BotonMenos from "./componentes/Botones/BotonMenos.js";
 import PomodoroText from "./componentes/Textos/PomodoroText.js";
@@ -13,11 +10,6 @@ export default function App() {
   return (
     <View style={styles.container}>
       <PomodoroTimer />
-      <View style={styles.botones}>
-        <BotonStart />
-        <BotonReset />
-        <BotonPause />
-      </View>
       <View style={styles.botones}>
         <PomodoroText />
         <BotonMas />

@@ -1,19 +1,21 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { View, Image, StyleSheet, TouchableOpacity, Text } from 'react-native';
-
+import React, { useState, useEffect, useRef } from "react";
+import { View, Image, StyleSheet, TouchableOpacity, Text } from "react-native";
+import BotonStart from "../Botones/BotonStart.js";
+import BotonPause from "../Botones/BotonPause.js";
+import BotonReset from "../Botones/BotonReset.js";
 
 const imageMap = {
-  '0': require('../../assets/numeros/cero.png'),
-  '1': require('../../assets/numeros/uno.png'),
-  '2': require('../../assets/numeros/dos.png'),
-  '3': require('../../assets/numeros/tres.png'),
-  '4': require('../../assets/numeros/cuatro.png'),
-  '5': require('../../assets/numeros/cinco.png'),
-  '6': require('../../assets/numeros/seis.png'),
-  '7': require('../../assets/numeros/siete.png'),
-  '8': require('../../assets/numeros/ocho.png'),
-  '9': require('../../assets/numeros/nueve.png'),
-  ':': require('../../assets/numeros/dosPuntos.png'),
+  0: require("../../assets/numeros/cero.png"),
+  1: require("../../assets/numeros/uno.png"),
+  2: require("../../assets/numeros/dos.png"),
+  3: require("../../assets/numeros/tres.png"),
+  4: require("../../assets/numeros/cuatro.png"),
+  5: require("../../assets/numeros/cinco.png"),
+  6: require("../../assets/numeros/seis.png"),
+  7: require("../../assets/numeros/siete.png"),
+  8: require("../../assets/numeros/ocho.png"),
+  9: require("../../assets/numeros/nueve.png"),
+  ":": require("../../assets/numeros/dosPuntos.png"),
 };
 
 const PomodoroTimer = () => {
@@ -26,7 +28,7 @@ const PomodoroTimer = () => {
     if (!isRunning) {
       setIsRunning(true);
       intervalRef.current = setInterval(() => {
-        setSecondsLeft(prev => {
+        setSecondsLeft((prev) => {
           if (prev <= 1) {
             clearInterval(intervalRef.current);
             setIsRunning(false);
@@ -54,9 +56,9 @@ const PomodoroTimer = () => {
   }, []);
 
   const formatTime = (totalSeconds) => {
-    const minutes = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
-    const seconds = String(totalSeconds % 60).padStart(2, '0');
-    return `${minutes}:${seconds}`.split('');
+    const minutes = String(Math.floor(totalSeconds / 60)).padStart(2, "0");
+    const seconds = String(totalSeconds % 60).padStart(2, "0");
+    return `${minutes}:${seconds}`.split("");
   };
 
   const timeArray = formatTime(secondsLeft);
@@ -74,19 +76,10 @@ const PomodoroTimer = () => {
         ))}
       </View>
 
-
       <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={startTimer} style={styles.button}>
-          <Text style={styles.buttonText}>Start</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={pauseTimer} style={styles.button}>
-          <Text style={styles.buttonText}>Pause</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={resetTimer} style={styles.button}>
-          <Text style={styles.buttonText}>Reset</Text>
-        </TouchableOpacity>
+        <BotonStart onPress={startTimer} />
+        <BotonPause onPress={pauseTimer} />
+        <BotonReset onPress={resetTimer} />
       </View>
     </View>
   );
@@ -95,11 +88,11 @@ const PomodoroTimer = () => {
 const styles = StyleSheet.create({
   container: {
     padding: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   timerContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginBottom: 30,
   },
   number: {
@@ -108,19 +101,19 @@ const styles = StyleSheet.create({
     marginHorizontal: 2,
   },
   buttonContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 10,
   },
   button: {
-    backgroundColor: '#ff6347',
+    backgroundColor: "#ff6347",
     paddingHorizontal: 16,
     paddingVertical: 10,
     borderRadius: 10,
     marginHorizontal: 5,
   },
   buttonText: {
-    color: 'white',
-    fontWeight: 'bold',
+    color: "white",
+    fontWeight: "bold",
   },
 });
 
