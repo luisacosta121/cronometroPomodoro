@@ -4,7 +4,7 @@ import BotonMas from "./componentes/Botones/BotonMas.js";
 import BotonMenos from "./componentes/Botones/BotonMenos.js";
 import PomodoroTimer from "./componentes/Cronometro/Cronometro.js";
 import NumeroConImagenes from "./componentes/Estilos/NumeroConImagenes.js";
-import { StatusBar } from 'expo-status-bar';
+import { StatusBar } from "expo-status-bar";
 
 export default function App() {
   const [pomodoroTime, setPomodoroTime] = useState(25);
@@ -15,33 +15,34 @@ export default function App() {
   const decrementPomodoro = () =>
     setPomodoroTime((prev) => Math.max(prev - 1, 1));
 
-  const incrementBreak = () =>
-    setBreakTime((prev) => Math.min(prev + 1, 5));
-  const decrementBreak = () =>
-    setBreakTime((prev) => Math.max(prev - 1, 1));
+  const incrementBreak = () => setBreakTime((prev) => Math.min(prev + 1, 5));
+  const decrementBreak = () => setBreakTime((prev) => Math.max(prev - 1, 1));
 
   return (
     <View style={styles.container}>
       <PomodoroTimer pomodoroTime={pomodoroTime} breakTime={breakTime} />
-
-      <View style={styles.botones}>
+      <View>
         <Image
           source={require("./assets/textos/pomodoroText.png")}
-          style={{ width: 150, height: 100 }}
+          style={{ width: 200, height: 100 }}
           resizeMode="contain"
         />
+      </View>
+      <View style={styles.botones}>
         <BotonMenos onPress={decrementPomodoro} />
         <NumeroConImagenes numero={pomodoroTime} />
         <BotonMas onPress={incrementPomodoro} />
       </View>
-
-      <View style={styles.botones}>
+      <View>
         <Image
           source={require("./assets/textos/breakText.png")}
-          style={{ width: 120, height: 100 }}
+          style={{ width: 150, height: 100 }}
           resizeMode="contain"
         />
-       <BotonMenos onPress={decrementBreak} />
+      </View>
+
+      <View style={styles.botones}>
+        <BotonMenos onPress={decrementBreak} />
         <NumeroConImagenes numero={breakTime} />
         <BotonMas onPress={incrementBreak} />
       </View>

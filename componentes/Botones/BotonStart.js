@@ -1,7 +1,5 @@
 import { TouchableOpacity, Image } from "react-native";
-import EstiloBoton from "../Estilos/EstilosBoton.js"
-
-
+import EstiloBoton from "../Estilos/EstilosBoton.js";
 
 const BotonStart = ({ onPress }) => {
   return (
@@ -9,12 +7,9 @@ const BotonStart = ({ onPress }) => {
       <Image
         source={require("../../assets/botones/botonStart.png")}
         style={EstiloBoton.imagen}
-
-      
       />
     </TouchableOpacity>
   );
 };
 
 export default BotonStart;
-

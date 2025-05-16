@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { View, Image, StyleSheet } from "react-native";
+import { View, Image, ImageBackground, StyleSheet } from "react-native";
 import BotonStart from "../Botones/BotonStart.js";
 import BotonPause from "../Botones/BotonPause.js";
 import BotonReset from "../Botones/BotonReset.js";
@@ -31,30 +31,31 @@ const PomodoroTimer = ({ pomodoroTime, breakTime }) => {
 
   // Controla el conteo del timer
   useEffect(() => {
-    if (isRunning) {
-      intervalRef.current = setInterval(() => {
-        setSecondsLeft((prev) => {
-          if (prev <= 1) {
-            clearInterval(intervalRef.current);
-            // Cambiar fase (pomodoro <-> break)
-            setIsPomodoro((prevMode) => !prevMode);
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-    } else {
-      clearInterval(intervalRef.current);
-    }
-    return () => clearInterval(intervalRef.current);
-  }, [isRunning]);
+  if (isRunning) {
+    intervalRef.current = setInterval(() => {
+      setSecondsLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(intervalRef.current);
 
-  // Iniciar automáticamente el timer cuando cambie de fase y esté en modo running
-  useEffect(() => {
-    if (secondsLeft === 0 && isRunning) {
-      setSecondsLeft((isPomodoro ? pomodoroTime : breakTime) * 60);
-    }
-  }, [secondsLeft, isRunning, isPomodoro, pomodoroTime, breakTime]);
+          const nextIsPomodoro = !isPomodoro;
+          setIsPomodoro(nextIsPomodoro);
+          const nextTime = (nextIsPomodoro ? pomodoroTime : breakTime) * 60;
+          setSecondsLeft(nextTime);
+
+          // ⚠️ Reiniciar el cronómetro automáticamente
+          setIsRunning(true);
+
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  } else {
+    clearInterval(intervalRef.current);
+  }
+
+  return () => clearInterval(intervalRef.current);
+}, [isRunning, isPomodoro, pomodoroTime, breakTime]);
 
   // Funciones para botones
   const startTimer = () => {
@@ -81,6 +82,10 @@ const PomodoroTimer = ({ pomodoroTime, breakTime }) => {
 
   return (
     
+<ImageBackground source={require('../../assets/fondo/fondoHoja.jpg')} style={styles.fondo}>
+     
+   
+    
     <View style={styles.container}>
     {/* Imagen del tipo de intervalo */}
     <Image
@@ -90,6 +95,7 @@ const PomodoroTimer = ({ pomodoroTime, breakTime }) => {
           : require("../../assets/textos/breakText.png")
       }
       style={styles.intervalTypeImage}
+      
       resizeMode="contain"
     />
 
@@ -110,6 +116,7 @@ const PomodoroTimer = ({ pomodoroTime, breakTime }) => {
       <BotonReset onPress={resetTimer} />
     </View>
   </View>
+  </ImageBackground>
   );
 };
 
@@ -133,9 +140,12 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   intervalTypeImage: {
-  width: 160,
-  height: 80,
-  marginBottom: 20,}
+  width: 300,
+  height: 150,
+  marginBottom: 20,},
+  fondo: {
+  resizeMode: "cover",
+  position: "static"}
 });
 
 export default PomodoroTimer;

@@ -1,14 +1,12 @@
-import {  TouchableOpacity, Image } from "react-native";
-import EstiloBoton from "../Estilos/EstilosBoton.js"
+import { TouchableOpacity, Image } from "react-native";
+import EstiloBoton from "../Estilos/EstilosBoton.js";
 
-const BotonReset = ({onPress}) => {
+const BotonReset = ({ onPress }) => {
   return (
     <TouchableOpacity onPress={onPress}>
       <Image
         source={require("../../assets/botones/botonReset.png")}
-          style={EstiloBoton.imagen}
-        
-
+        style={EstiloBoton.imagen}
       />
     </TouchableOpacity>
   );

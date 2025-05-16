@@ -15,7 +15,6 @@ const NumeroConImagenes = ({ numero }) => {
           resizeMode="contain"
         />
       ))}
-
     </View>
   );
 };

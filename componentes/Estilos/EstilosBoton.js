@@ -2,10 +2,9 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   imagen: {
-    width: 50,
-    height: 50
+    width: 60,
+    height: 60,
   },
-
 });
 
-export default styles
+export default styles;
