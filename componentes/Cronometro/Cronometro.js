@@ -18,8 +18,8 @@ const imageMap = {
   ":": require("../../assets/numeros/dosPuntos.png"),
 };
 
-const PomodoroTimer = () => {
-  const initialTime = 25 * 60;
+const PomodoroTimer = ({ initialMinutes }) => {
+  const initialTime = initialMinutes * 60;
   const [secondsLeft, setSecondsLeft] = useState(initialTime);
   const [isRunning, setIsRunning] = useState(false);
   const intervalRef = useRef(null);
@@ -118,3 +118,4 @@ const styles = StyleSheet.create({
 });
 
 export default PomodoroTimer;
+export { PomodoroTimer, imageMap };
