@@ -1,5 +1,6 @@
 import { TouchableOpacity, Image } from "react-native";
 import EstiloBoton from "../Estilos/EstilosBoton.js";
+import { Vibration } from "react-native";
 
 /*
   TouchableOpacity: BOTON VISUAL QUE REDUCE SU OPACIDAD AL PRESIONARLO
@@ -12,7 +13,7 @@ import EstiloBoton from "../Estilos/EstilosBoton.js";
 
 const BotonStart = ({ onPress }) => {
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={() => { Vibration.vibrate(50); onPress(); }}>
       <Image
         source={require("../../assets/botones/botonStart.png")}
         style={EstiloBoton.imagen}

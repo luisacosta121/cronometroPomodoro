@@ -3,6 +3,7 @@ import { View, Image, ImageBackground, StyleSheet } from "react-native";
 import BotonStart from "../Botones/BotonStart.js";
 import BotonPause from "../Botones/BotonPause.js";
 import BotonReset from "../Botones/BotonReset.js";
+import { Vibration } from "react-native";
 
 /*
   const [segundosRestantes, setSegundosRestantes] = useState(pomodoroTime * 60): SEGUNDOS RESTANTES DEL TEMPORIZADOR
@@ -60,7 +61,7 @@ const PomodoroTimer = ({ pomodoroTime, breakTime }) => {
             setEnPomodoro(siguePomodoro);
             const proximo = (siguePomodoro ? pomodoroTime : breakTime) * 60;
             setSegundosRestantes(proximo);
-
+            Vibration.vibrate(200)
             setEnMarcha(true);
 
             return 0;
