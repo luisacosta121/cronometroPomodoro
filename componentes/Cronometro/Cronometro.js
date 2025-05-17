@@ -4,6 +4,27 @@ import BotonStart from "../Botones/BotonStart.js";
 import BotonPause from "../Botones/BotonPause.js";
 import BotonReset from "../Botones/BotonReset.js";
 
+/*
+  const [segundosRestantes, setSegundosRestantes] = useState(pomodoroTime * 60): SEGUNDOS RESTANTES DEL TEMPORIZADOR
+  const [enMarcha, setEnMarcha] = useState(false): INDICA SI EL TEMPORIZADOR ESTA FUNCIONANDO O NO
+  const [enPomodoro, setEnPomodoro] = useState(true): SI ES TRUE ESTA EN PODOMORO, SI ES FALSE EN BREAK
+  const intervalo = useRef(null): REFERENCIA PARA DETENER setIntervalo
+  *useEffect(() => {
+    setSegundosRestantes((enPomodoro ? pomodoroTime : breakTime) * 60);
+    }, [pomodoroTime, breakTime, enPomodoro]): ACTUALIZA EL TIEMPO CUANDO CAMBIA EL MODO
+  *useEffect(() => {
+    if (isRunning) {
+      intervalRef.current = setInterval(() => {
+        ... (MAS CODIGO)
+       return () => clearInterval(intervalRef.current);
+        }, [isRunning, isPomodoro, pomodoroTime, breakTime]): CUANDO EnMarcha ES TRUE INICIA UN INTERVALO
+        DE 1 SEGUNDO, AL LLEGAR A 0 CAMBIA A POMODORO O BREAK Y REINICIA EL TIEMPO CON NUEVO CONTADOR.
+  *const formatTime = (totalSeconds): DA FORMATO A LOS NUMEROS 
+  RESUMEN: MUESTRA EL CRONOMETRO CON IMAGENES PERSONALIZADAS, PERMITE EMPEZAR, PAUSAR Y RESETEAR EL CONTADOR.
+           ALTERNA AUTOMATICAMENTE ENTRE POMODORO Y BREAK Y PERMITE ELEGIR EL TIEMPO DE AMBOS
+           CON MINIMO DE 1 MINUTOS PARA AMBOS Y MAXIMO 25 MINUTOS PARA POMODORO Y 5 MINUTOS PARA BREAK
+*/
+
 const imageMap = {
   0: require("../../assets/numeros/cero.png"),
   1: require("../../assets/numeros/uno.png"),
@@ -19,104 +40,97 @@ const imageMap = {
 };
 
 const PomodoroTimer = ({ pomodoroTime, breakTime }) => {
-  const [secondsLeft, setSecondsLeft] = useState(pomodoroTime * 60);
-  const [isRunning, setIsRunning] = useState(false);
-  const [isPomodoro, setIsPomodoro] = useState(true); // true = pomodoro, false = break
-  const intervalRef = useRef(null);
+  const [segundosRestantes, setSegundosRestantes] = useState(pomodoroTime * 60);
+  const [enMarcha, setEnMarcha] = useState(false);
+  const [enPomodoro, setEnPomodoro] = useState(true); // true = pomodoro, false = break
+  const intervalo = useRef(null);
 
-  // Actualiza el tiempo cuando cambia pomodoro/break o los tiempos config
   useEffect(() => {
-    setSecondsLeft((isPomodoro ? pomodoroTime : breakTime) * 60);
-  }, [pomodoroTime, breakTime, isPomodoro]);
+    setSegundosRestantes((enPomodoro ? pomodoroTime : breakTime) * 60);
+  }, [pomodoroTime, breakTime, enPomodoro]);
 
-  // Controla el conteo del timer
   useEffect(() => {
-  if (isRunning) {
-    intervalRef.current = setInterval(() => {
-      setSecondsLeft((prev) => {
-        if (prev <= 1) {
-          clearInterval(intervalRef.current);
+    if (enMarcha) {
+      intervalo.current = setInterval(() => {
+        setSegundosRestantes((prev) => {
+          if (prev <= 1) {
+            clearInterval(intervalo.current);
 
-          const nextIsPomodoro = !isPomodoro;
-          setIsPomodoro(nextIsPomodoro);
-          const nextTime = (nextIsPomodoro ? pomodoroTime : breakTime) * 60;
-          setSecondsLeft(nextTime);
+            const siguePomodoro = !enPomodoro;
+            setEnPomodoro(siguePomodoro);
+            const proximo = (siguePomodoro ? pomodoroTime : breakTime) * 60;
+            setSegundosRestantes(proximo);
 
-          // ⚠️ Reiniciar el cronómetro automáticamente
-          setIsRunning(true);
+            setEnMarcha(true);
 
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-  } else {
-    clearInterval(intervalRef.current);
-  }
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    } else {
+      clearInterval(intervalo.current);
+    }
 
-  return () => clearInterval(intervalRef.current);
-}, [isRunning, isPomodoro, pomodoroTime, breakTime]);
+    return () => clearInterval(intervalo.current);
+  }, [enMarcha, enPomodoro, pomodoroTime, breakTime]);
 
-  // Funciones para botones
   const startTimer = () => {
-    if (!isRunning) setIsRunning(true);
+    if (!enMarcha) setEnMarcha(true);
   };
 
   const pauseTimer = () => {
-    setIsRunning(false);
+    setEnMarcha(false);
   };
 
   const resetTimer = () => {
-    setIsRunning(false);
-    setSecondsLeft((isPomodoro ? pomodoroTime : breakTime) * 60);
+    setEnMarcha(false);
+    setSegundosRestantes((enPomodoro ? pomodoroTime : breakTime) * 60);
   };
 
-  // Formateo para mostrar con imágenes
   const formatTime = (totalSeconds) => {
-    const minutes = String(Math.floor(totalSeconds / 60)).padStart(2, "0");
-    const seconds = String(totalSeconds % 60).padStart(2, "0");
-    return `${minutes}:${seconds}`.split("");
+    const minutos = String(Math.floor(totalSeconds / 60)).padStart(2, "0");
+    const segundos = String(totalSeconds % 60).padStart(2, "0");
+    return `${minutos}:${segundos}`.split("");
   };
 
-  const timeArray = formatTime(secondsLeft);
+  const timeArray = formatTime(segundosRestantes);
 
   return (
-    
-<ImageBackground source={require('../../assets/fondo/fondoHoja.jpg')} style={styles.fondo}>
-     
-   
-    
-    <View style={styles.container}>
-    {/* Imagen del tipo de intervalo */}
-    <Image
-      source={
-        isPomodoro
-          ? require("../../assets/textos/pomodoroText.png")
-          : require("../../assets/textos/breakText.png")
-      }
-      style={styles.intervalTypeImage}
-      
-      resizeMode="contain"
-    />
-
-    <View style={styles.timerContainer}>
-      {timeArray.map((char, index) => (
+    <ImageBackground
+      source={require("../../assets/fondo/fondoHoja.jpg")}
+      style={styles.fondo}
+    >
+      <View style={styles.container}>
+        {/* Imagen del tipo de intervalo */}
         <Image
-          key={index}
-          source={imageMap[char]}
-          style={styles.number}
+          source={
+            enPomodoro
+              ? require("../../assets/textos/pomodoroText.png")
+              : require("../../assets/textos/breakText.png")
+          }
+          style={styles.intervalTypeImage}
           resizeMode="contain"
         />
-      ))}
-    </View>
 
-    <View style={styles.buttonContainer}>
-      <BotonStart onPress={startTimer} />
-      <BotonPause onPress={pauseTimer} />
-      <BotonReset onPress={resetTimer} />
-    </View>
-  </View>
-  </ImageBackground>
+        <View style={styles.timerContainer}>
+          {timeArray.map((char, index) => (
+            <Image
+              key={index}
+              source={imageMap[char]}
+              style={styles.number}
+              resizeMode="contain"
+            />
+          ))}
+        </View>
+
+        <View style={styles.buttonContainer}>
+          <BotonStart onPress={startTimer} />
+          <BotonPause onPress={pauseTimer} />
+          <BotonReset onPress={resetTimer} />
+        </View>
+      </View>
+    </ImageBackground>
   );
 };
 
@@ -140,12 +154,14 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   intervalTypeImage: {
-  width: 300,
-  height: 150,
-  marginBottom: 20,},
+    width: 300,
+    height: 150,
+    marginBottom: 20,
+  },
   fondo: {
-  resizeMode: "cover",
-  position: "static"}
+    resizeMode: "cover",
+    position: "static",
+  },
 });
 
 export default PomodoroTimer;

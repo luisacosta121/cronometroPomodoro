@@ -7,16 +7,18 @@ import NumeroConImagenes from "./componentes/Estilos/NumeroConImagenes.js";
 import { StatusBar } from "expo-status-bar";
 
 export default function App() {
+  //-----------------------------------------------------
+  //    ESTADOS Y FUNCIONES PARA AJUSTAR LOS TIEMPOS
+  //-----------------------------------------------------
   const [pomodoroTime, setPomodoroTime] = useState(25);
   const [breakTime, setBreakTime] = useState(5);
 
-  const incrementPomodoro = () =>
-    setPomodoroTime((prev) => Math.min(prev + 1, 25));
-  const decrementPomodoro = () =>
-    setPomodoroTime((prev) => Math.max(prev - 1, 1));
+  const incrementoPomodoro = () => setPomodoroTime((prev) => Math.min(prev + 1, 25));
+  const decrementoPomodoro = () => setPomodoroTime((prev) => Math.max(prev - 1, 1));
 
-  const incrementBreak = () => setBreakTime((prev) => Math.min(prev + 1, 5));
-  const decrementBreak = () => setBreakTime((prev) => Math.max(prev - 1, 1));
+  const incrementoBreak = () => setBreakTime((prev) => Math.min(prev + 1, 5));
+  const decrementoBreak = () => setBreakTime((prev) => Math.max(prev - 1, 1));
+  //-----------------------------------------------------
 
   return (
     <View style={styles.container}>
@@ -29,9 +31,9 @@ export default function App() {
         />
       </View>
       <View style={styles.botones}>
-        <BotonMenos onPress={decrementPomodoro} />
+        <BotonMenos onPress={decrementoPomodoro} />
         <NumeroConImagenes numero={pomodoroTime} />
-        <BotonMas onPress={incrementPomodoro} />
+        <BotonMas onPress={incrementoPomodoro} />
       </View>
       <View>
         <Image
@@ -42,9 +44,9 @@ export default function App() {
       </View>
 
       <View style={styles.botones}>
-        <BotonMenos onPress={decrementBreak} />
+        <BotonMenos onPress={decrementoBreak} />
         <NumeroConImagenes numero={breakTime} />
-        <BotonMas onPress={incrementBreak} />
+        <BotonMas onPress={incrementoBreak} />
       </View>
 
       <StatusBar style="auto" />

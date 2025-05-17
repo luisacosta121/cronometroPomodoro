@@ -1,17 +1,25 @@
 import React from "react";
 import { View, Image, StyleSheet } from "react-native";
-import { imageMap } from "../Cronometro/Cronometro";
+import { imageMap as mapaDeImagenes } from "../Cronometro/Cronometro";
+
+/*
+  numero.toString(): CONVIERTE EL NUMERO EN STRING
+  .padStart(2, "0"): SI ES NUMERO DE UN DIGITO AGREGA 0 AL PRINCIPIO
+  .split(""): SEPARA LOS MINUTOS CON UNA COMA, POR EJEMPLO "05" EN [0, 5]
+  digitos.map: RECORRE CADA DIGITO Y MUESTRA LA IMAGEN QUE CORRESPONDE
+  source={imageMap[digit]}: ACCEDE A LA IMAGEN CORRESPONDE QUE SE ENCUENTRA EN mapaDeImagenes
+*/
 
 const NumeroConImagenes = ({ numero }) => {
-  const digits = numero.toString().padStart(2, "0").split("");
+  const digitos = numero.toString().padStart(2, "0").split("");
 
   return (
     <View style={styles.container}>
-      {digits.map((digit, index) => (
+      {digitos.map((digit, index) => (
         <Image
           key={index}
-          source={imageMap[digit]}
-          style={styles.digit}
+          source={mapaDeImagenes[digit]}
+          style={styles.digito}
           resizeMode="contain"
         />
       ))}
@@ -24,7 +32,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  digit: {
+  digito: {
     width: 30,
     height: 45,
     marginHorizontal: 1,
